@@ -23,12 +23,12 @@ public class JWTFilter extends GenericFilterBean {
 
    private static final Logger LOG = LoggerFactory.getLogger(JWTFilter.class);
 
-   public static final String AUTHORIZATION_HEADER = "Authorization";
+   private final TokenFactory tokenFactory;
+   private final String header;
 
-   private TokenFactory tokenFactory;
-
-   public JWTFilter(TokenFactory tokenFactory) {
+   public JWTFilter(TokenFactory tokenFactory, String header) {
       this.tokenFactory = tokenFactory;
+      this.header = header;
    }
 
    @Override
@@ -50,7 +50,7 @@ public class JWTFilter extends GenericFilterBean {
    }
 
    private String resolveToken(HttpServletRequest request) {
-      String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
+      String bearerToken = request.getHeader(header);
       if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
          return bearerToken.substring(7);
       }

@@ -14,6 +14,13 @@
         "description": "This token must be encoded using Base64 with mininum 88 Bits (you can type `echo 'secret-key'|base64` on your command line)"
      },
      {
+        "name": "jwt.header",
+        "type": "java.lang.String",
+        "defaultValue": "Authorization",
+        "sourceType": "de.coderspack.spring.boot.jwt.autoconfigure.properties.JwtProperties",
+        "description": "JWT token http header name"
+     },
+     {
         "name": "jwt.token-validity-in-seconds",
         "type": "java.lang.Long",
         "defaultValue": 86400,

@@ -1,6 +1,7 @@
 package de.coderspack.spring.boot.jwt.autoconfigure;
 
 import de.coderspack.spring.boot.jwt.autoconfigure.properties.JwtProperties;
+import de.coderspack.spring.boot.jwt.library.security.JwtAuthenticationManager;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -18,20 +19,26 @@ public class JwtConfiguration {
 
    @Bean
    @ConditionalOnMissingBean
-   public TokenFactory tokenProvider(final AuthenticationManagerBuilder authenticationManagerBuilder, final JwtProperties jwtProperties) {
-      return new TokenFactory(authenticationManagerBuilder, jwtProperties.getBase64Secret(), jwtProperties.getTokenValidityInSeconds(), jwtProperties.getTokenValidityInSecondsForRememberMe());
+   public TokenFactory tokenProvider(final JwtProperties jwtProperties) {
+      return new TokenFactory(jwtProperties.getBase64Secret(), jwtProperties.getTokenValidityInSeconds(), jwtProperties.getTokenValidityInSecondsForRememberMe());
    }
 
    @Bean
    @ConditionalOnMissingBean
-   public JWTFilter jwtFilter(final TokenFactory tokenFactory) {
-      return new JWTFilter(tokenFactory);
+   public JwtAuthenticationManager jwtAuthenticationManager(final AuthenticationManagerBuilder authenticationManagerBuilder, final TokenFactory tokenFactory) {
+      return new JwtAuthenticationManager(authenticationManagerBuilder, tokenFactory);
    }
 
    @Bean
    @ConditionalOnMissingBean
-   public JWTConfigurer jwtConfigurer(final TokenFactory tokenFactory) {
-      return new JWTConfigurer(tokenFactory);
+   public JWTFilter jwtFilter(final TokenFactory tokenFactory, final JwtProperties jwtProperties) {
+      return new JWTFilter(tokenFactory, jwtProperties.getHeader());
+   }
+
+   @Bean
+   @ConditionalOnMissingBean
+   public JWTConfigurer jwtConfigurer(final TokenFactory tokenFactory, final JwtProperties jwtProperties) {
+      return new JWTConfigurer(tokenFactory, jwtProperties.getHeader());
    }
 
    @Bean

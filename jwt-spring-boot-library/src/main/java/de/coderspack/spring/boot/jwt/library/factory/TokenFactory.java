@@ -1,17 +1,14 @@
 package de.coderspack.spring.boot.jwt.library.factory;
 
-import de.coderspack.spring.boot.jwt.library.factory.model.Login;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 
 import java.security.Key;
@@ -27,36 +24,31 @@ public class TokenFactory {
 
    private static final String AUTHORITIES_KEY = "auth";
 
-   private final AuthenticationManagerBuilder authenticationManagerBuilder;
    private final long tokenValidityInMilliseconds;
    private final long tokenValidityInMillisecondsForRememberMe;
    private final Key key;
 
    // TODO #1 add additional createToken(username, password, remember)
-   public TokenFactory(final AuthenticationManagerBuilder authenticationManagerBuilder,
-                       final String base64Secret,
+   public TokenFactory(final String base64Secret,
                        final long tokenValidityInSeconds,
                        final long tokenValidityInSecondsForRememberMe) {
-      this.authenticationManagerBuilder = authenticationManagerBuilder;
       this.key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(base64Secret));
       this.tokenValidityInMilliseconds = tokenValidityInSeconds * 1000;
       this.tokenValidityInMillisecondsForRememberMe = tokenValidityInSecondsForRememberMe * 1000;
    }
 
-   public String createToken(final Login login) {
-      UsernamePasswordAuthenticationToken authenticationToken =
-         new UsernamePasswordAuthenticationToken(login.getUsername(), login.getPassword());
+   public String createToken(final Authentication authentication) {
+      return createToken(authentication, false);
+   }
 
-      Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
-      SecurityContextHolder.getContext().setAuthentication(authentication);
-
-      String authorities = authentication.getAuthorities().stream()
+   public String createToken(final Authentication authentication, final boolean rememberMe) {
+      final var authorities = authentication.getAuthorities().stream()
          .map(GrantedAuthority::getAuthority)
          .collect(Collectors.joining(","));
 
-      long now = (new Date()).getTime();
+      final var now = (new Date()).getTime();
       Date validity;
-      if (login.isRememberMe()) {
+      if (rememberMe) {
          validity = new Date(now + this.tokenValidityInMillisecondsForRememberMe);
       } else {
          validity = new Date(now + this.tokenValidityInMilliseconds);
