@@ -6,7 +6,7 @@ This starter is still in progress and not production ready.
 ## Requirements
 
 * JDK 11 or higher
-* Spring Boot 2.2.x
+* Spring Boot 2.3.x
 
 ## Getting started
 
@@ -17,13 +17,13 @@ _Maven_
 <dependency>
   <groupId>de.coderspack</groupId>
   <artifactId>jwt-spring-boot-starter</artifactId>
-  <version>0.0.2</version>
+  <version>0.0.3</version>
 </dependency>
 ```
 
 _Gradle_
 ```
-implementation 'de.coderspack:spring-boot-starter-jwt:0.0.2'
+implementation 'de.coderspack:spring-boot-starter-jwt:0.0.3'
 ```
 
 _Code_
