@@ -4,7 +4,7 @@
 
    <groupId>de.coderspack</groupId>
    <artifactId>spring-boot-starter-jwt</artifactId>
-   <version>0.0.3-SNAPSHOT</version>
+   <version>0.0.3</version>
    <packaging>pom</packaging>
 
    <name>spring-boot-starter-jwt</name>
@@ -39,7 +39,7 @@
       <connection>scm:git:git://github.com/coderspack/jwt-spring-security-demo.git</connection>
       <url>https://github.com/coderspack/jwt-spring-security-demo</url>
       <developerConnection>scm:git:git@github.com:coderspack/jwt-spring-security-demo.git</developerConnection>
-      <tag>HEAD</tag>
+      <tag>spring-boot-starter-jwt-0.0.3</tag>
    </scm>
 
    <distributionManagement>
