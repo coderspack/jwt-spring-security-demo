@@ -59,7 +59,7 @@
       <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
       <java.version>11</java.version>
 
-      <spring-boot.version>2.3.1.RELEASE</spring-boot.version>
+      <spring-boot.version>2.3.3.RELEASE</spring-boot.version>
 
       <maven.min.version>3.2.1</maven.min.version>
       <maven.compiler.target>${java.version}</maven.compiler.target>
